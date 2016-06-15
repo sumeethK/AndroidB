@@ -3,6 +3,7 @@ package com.example.daljit.androidb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         editText = (EditText) findViewById(R.id.text_edit_notes);
         textView = (TextView) findViewById(R.id.text_view_notes);
+        textView.setMovementMethod(new ScrollingMovementMethod());
         dbHandler = new MyNotesDBHandler(this,null,null,1);
         displayNotes();
 
