@@ -7,6 +7,9 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by daljit on 12-Jun-16.
  */
@@ -48,10 +51,10 @@ public class MyNotesDBHandler extends SQLiteOpenHelper {
 
     }
 
-    public void deleteNotes(String id){
-        String queery = "DELETE FROM " +TABLE_NAME + " WHERE " +COLUMN_ID + "=\"" + id +"\";";
+    public void deleteNotes(int id){
+        String query = "DELETE FROM " +TABLE_NAME + " WHERE " +COLUMN_ID + "=\"" + id +"\";";
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(queery);
+        db.execSQL(query);
     }
 
     public String printAllNotes(){
@@ -74,6 +77,32 @@ public class MyNotesDBHandler extends SQLiteOpenHelper {
         c.close();
         db.close();
         return notes;
+
+
+    }
+
+    public List getAllNotesList(){
+        List<MyNotes> notesList = new ArrayList<MyNotes>();
+        String notes ="";
+        SQLiteDatabase db = getWritableDatabase();
+        String query ="SELECT * FROM "+TABLE_NAME +";";
+
+        Cursor c  = db.rawQuery(query,null);
+        c.moveToFirst();
+
+        while (!c.isAfterLast()){
+
+            if(c.getString(c.getColumnIndex(COLUMN_NOTES))!=null){
+                MyNotes obj = new MyNotes();
+                obj.setNotes(c.getString(c.getColumnIndex(COLUMN_NOTES)));
+                obj.set_id(c.getString(c.getColumnIndex(COLUMN_ID)));
+                notesList.add(obj);
+            }
+            c.moveToNext();
+        }
+        c.close();
+        db.close();
+        return notesList;
 
 
     }
