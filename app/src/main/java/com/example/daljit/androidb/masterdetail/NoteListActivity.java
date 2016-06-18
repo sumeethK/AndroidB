@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
@@ -15,28 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.daljit.androidb.MyNotes;
+import com.androidb.util.MyNotesUtil;
+import com.example.daljit.androidb.model.MyNotes;
 import com.example.daljit.androidb.R;
 
-import com.example.daljit.androidb.masterdetail.dummy.DummyContent;
+import com.example.daljit.androidb.model.ValueObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An activity representing a list of Notes. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link NoteDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
 public class NoteListActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
     private boolean mTwoPane;
     private static List<MyNotes> NOTES = new ArrayList<MyNotes>();
 
@@ -44,8 +32,8 @@ public class NoteListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_list);
-        DummyContent.setContext(this);
-        NOTES = DummyContent.NOTES;
+        ValueObject.setContext(this);
+        NOTES = ValueObject.NOTES;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
@@ -64,10 +52,6 @@ public class NoteListActivity extends AppCompatActivity {
         setupRecyclerView((RecyclerView) recyclerView);
 
         if (findViewById(R.id.note_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
         }
     }
@@ -79,7 +63,6 @@ public class NoteListActivity extends AppCompatActivity {
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        // private final List<DummyContent.DummyItem> mValues;
         private final List<MyNotes> cValues;
 
         public SimpleItemRecyclerViewAdapter(List<MyNotes> items) {
@@ -96,9 +79,8 @@ public class NoteListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.myNotes = cValues.get(position);
-            //holder.mIdView.setText(cValues.get(position).get_id());
             holder.mIdView.setText("#");
-            holder.mContentView.setText(getTitle(cValues.get(position).getNotes()));
+            holder.mContentView.setText(MyNotesUtil.getTaeaser(cValues.get(position).getNotes()));
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,13 +104,6 @@ public class NoteListActivity extends AppCompatActivity {
             });
         }
 
-        private String getTitle(String note) {
-            if (note.length() > 5) return note.substring(0, 4) + "...";
-            else {
-                return note + "...";
-            }
-
-        }
 
         @Override
         public int getItemCount() {
@@ -139,7 +114,6 @@ public class NoteListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
 
             public MyNotes myNotes;
 

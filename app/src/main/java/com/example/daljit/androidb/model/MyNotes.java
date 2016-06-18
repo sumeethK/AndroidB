@@ -1,4 +1,4 @@
-package com.example.daljit.androidb;
+package com.example.daljit.androidb.model;
 
 /**
  * Created by daljit on 12-Jun-16.

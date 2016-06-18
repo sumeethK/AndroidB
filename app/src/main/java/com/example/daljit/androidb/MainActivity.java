@@ -3,20 +3,20 @@ package com.example.daljit.androidb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.androidb.util.MyNotesUtil;
+import com.example.daljit.androidb.db.MyNotesDBHandler;
+import com.example.daljit.androidb.masterdetail.NoteListActivity;
+import com.example.daljit.androidb.model.MyNotes;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.daljit.androidb.masterdetail.NoteListActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     private void displayNotes() {
         notes = dbHandler.getAllNotesList();
         listViewAdaptor(notes);
-        // textView.setText(getTaeaser(notes));
         editText.setText("");
 
     }
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         List notesList = new ArrayList();
         for (MyNotes note : notes
                 ) {
-            notesList.add(getTaeaser(note.getNotes()));
+            notesList.add(MyNotesUtil.getTaeaser(note.getNotes()));
 
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -102,13 +101,5 @@ public class MainActivity extends AppCompatActivity {
         displayNotes();
     }
 
-    private String getTaeaser(String note) {
-        if (note.length() > 10) return note.substring(0, 9) + "...";
-        else if (note.length() > 5) {
-            return note.substring(0, 4) + "...";
-        } else {
-            return note + "...";
-        }
 
-    }
 }
